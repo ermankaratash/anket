@@ -1,6 +1,26 @@
+<?php
+$i=0;
+$x=0;
+?>
 
-         
-                     <!-- Fonksiyonlar Bitiş -->	
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.5.2.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".cEkle").click(function(){
+            $("#cevap<?php echo $i; ?>").append('<input type="text" class="form-control" name="cevap[]" placeholder="" value=""> <br/> <br/>');
+            });
+        $(".sEkle").click(function(){
+            $("#soru<?php echo $x; ?>").append('<div><input type="text" class="form-control" name="soru[]" placeholder="" value=""><br/> <br/><div id="cevap<?php echo $i; ?>"><input type="text" class="form-control" name="cevap[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle"  href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/>');
+            $(".cEkle").click(function(){
+                $("#cevap<?php echo $i; ?>").append('<input type="text" class="form-control" name="cevap[]" placeholder="" value=""> <br/> <br/>');
+             });
+
+            });
+    });	
+</script>
+
 <?php 
     include "baglan.php";
 
@@ -27,9 +47,41 @@
     }
 ?>
 <form action="" method="post">
-    <input type="text" class="form-control" name="soru" placeholder="" value="">
-    <br/>
-    <input type="text" class="form-control" name="cevap" placeholder="" value="">
-    <br/>
+
+    <div id="soru<?php echo $x; ?>" >
+        <input type="text" class="form-control" name="soru[]" placeholder="" value="">
+        <br/> <br/>
+        <div id="cevap<?php echo $i; ?>">
+            <input type="text" class="form-control" name="cevap[]" placeholder="" value="">
+            <br/> <br/>
+        </div> 
+        <div style="min-height:30px;
+            min-width:35px;
+            text-align:center;
+            margin:2px;
+            color: #fff;
+            background-color: #F39C35;
+            border-color: #4cae4c;  
+            padding: 10px 16px;
+            font-size: 18px;
+            line-height: 1.33;
+            border-radius: 6px;}"> 
+            <button class="cEkle"  href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> 
+        </div> 
+    </div>
+
+    <div style="min-height:30px;
+    min-width:35px;
+    text-align:center;
+    margin:2px;
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;  
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px;}"> 
+    <button class="sEkle"  href="javascript:void(0)" type="button"> Yeni Soru Ekle </button> 
+    </div> 
     <button type="submit" > Kaydet </button>                             
 </form>			
