@@ -29,7 +29,7 @@ $y=0;
     include "baglan.php";
 
     if ($_POST){
-        //en fazla 10 soru girilebilir- soru ve cevaplar unique olmalı
+        
             $n = ($_POST['n'] );
             $n = $n + 1;
              for ($sayi = 0; $sayi < $n ; $sayi++) {
@@ -42,77 +42,18 @@ $y=0;
                 $kaydet2=$db->prepare("INSERT INTO anketcevap SET cevap =:c");
                 $kaydet2->execute([':c'=>$y]);
 
-                $sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$soru'");
-                $sorgu->execute();
-                $array=$sorgu->fetch();
+                $kaydet3=$db->prepare("SELECT id FROM anketsoru ORDER BY id DESC LIMIT 1");
+                $kaydet3->execute();
+                $sorgu5=$kaydet3->fetch();
 
-                $sorgu2=$db->prepare("SELECT id FROM anketcevap WHERE cevap='$y'");
-                $sorgu2->execute();
-                $array2=$sorgu2->fetch();
+                $kaydet5=$db->prepare("SELECT id FROM anketcevap ORDER BY id DESC LIMIT 1");
+                $kaydet5->execute();
+                $sorgu2=$kaydet5->fetch();
 
-                foreach($array2 as $idy){
-                    foreach($array as $idx){
-                    $kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$idx' WHERE id='$idy' ");
-                    $kaydet3->execute();
-                    }
-                }
-                
+                $kaydet4=$db->prepare("UPDATE anketcevap SET soruid='$sorgu5[0]' WHERE id='$sorgu2[0]' ");
+                $kaydet4->execute();
             }
          }
-        //$soru = ($_POST['soru']);
-        //$cevap = ($_POST['cevap']);
-        //if(!$soru || !$cevap){
-        //    echo "Boş alan bırakmayınız";
-        //}else{
-
-            /* foreach($cevap as $y){
-                $kaydet2=$db->prepare("INSERT INTO anketcevap SET cevap =:c");
-                $kaydet2->execute([':c'=>$y]);
-
-                foreach($soru as $x){
-                    $kaydet=$db->prepare("INSERT INTO anketsoru SET soru =:s");
-                    $kaydet->execute([':s'=>$x]);
-                    
-                    $sorgu2=$db->prepare("SELECT id FROM anketcevap WHERE cevap='$y'");
-                    $sorgu2->execute();
-                    $array2=$sorgu2->fetch();
-
-                    $sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$x'");
-                    $sorgu->execute();
-                    $array=$sorgu->fetch();
-                     
-                    
-                    foreach($array2 as $idy){
-                        foreach($array as $idx){
-                        $kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$idx' WHERE id='$idy' ");
-                        $kaydet3->execute();
-                        }
-                    }
-                }
-
-            } */
-
-            
-      
-                //$sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$x'");
-                //$sorgu->execute();
-                //$array=$sorgu->fetch();
-                //$sonuc = implode(",", $array);
-
-                //$sorgu2=$db->prepare("SELECT id FROM anketcevap WHERE cevap='$y'");
-                //$sorgu2->execute();
-                //$array2=$sorgu2->fetch();
-
-                //foreach($array as $idx){
-                //    foreach($array2 as $idy){
-                //$kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$idx' WHERE id='$idy' ");
-                //$kaydet3->execute();
-                //    }
-                //}
-
-            
-        //}
-
     }
 ?>
 <form action="" method="post">
