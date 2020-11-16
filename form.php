@@ -17,7 +17,7 @@ $y=0;
             i++;
             $("#"+y).hide();
             y++;
-            $("#soru").append('<div id="soru>" ><div><input type="text" class="form-control" name="soru'+i+'" placeholder="" value=""><br/> <br/><div id="cevap'+i+'"><input type="text" class="form-control" name="cevap'+i+'[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle" id='+y+' href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/></div>');
+            $("#soru").append('<div id="soru>" ><div><input type="text" class="form-control" name="soru'+i+'" placeholder="" value=""><br/> <br/><div id="cevap'+i+'"><input type="text" class="form-control" name="cevap'+i+'[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle" id='+y+' href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/><input type="hidden" class="form-control" name="n" placeholder="" value="'+i+'"></div>');
             $(".cEkle").click(function(){
                 $("#cevap"+i).append('<input type="text" class="form-control" name="cevap'+i+'[]" placeholder="" value=""> <br/> <br/>');
              });
@@ -29,8 +29,10 @@ $y=0;
     include "baglan.php";
 
     if ($_POST){
-        //en fazla 10 soru girilebilir-şu an 10 soru girmeden çalışmıyor, anketcevap ilk idsine soruidsini yazıyor, diğer idlere yazmıyor
-            for ($sayi = 0; $sayi < 10 ; $sayi++) {
+        //en fazla 10 soru girilebilir- soru ve cevaplar unique olmalı
+            $n = ($_POST['n'] );
+            $n = $n + 1;
+             for ($sayi = 0; $sayi < $n ; $sayi++) {
             $soru = ($_POST['soru'.$sayi] );
             $cevap = ($_POST['cevap'.$sayi] );
 
@@ -135,6 +137,7 @@ $y=0;
             border-radius: 6px;}"> 
             <button class="cEkle" id="<?php echo $y; ?>" href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> 
         </div> 
+        <input type="hidden" class="form-control" name="n" placeholder="" value="0">
     </div>
 
     <div style="min-height:30px;
