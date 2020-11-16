@@ -3,25 +3,24 @@ $i=0;
 $y=0;
 ?>
 
-
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.5.2.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
         var i=0;
         var y=0;
+        var a=0;
         $(".cEkle").click(function(){
-            $("#cevap"+i).append('<input type="text" class="form-control" name="cevap[]" placeholder="" value=""> <br/> <br/>');
+            $("#cevap"+i).append('<input type="text" class="form-control" name="cevap'+i+'[]" placeholder="" value=""> <br/> <br/>');
             });
         $(".sEkle").click(function(){
             i++;
             $("#"+y).hide();
             y++;
-            $("#soru").append('<div><input type="text" class="form-control" name="soru[]" placeholder="" value=""><br/> <br/><div id="cevap'+i+'"><input type="text" class="form-control" name="cevap[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle" id='+y+' href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/>');
+            $("#soru").append('<div id="soru>" ><div><input type="text" class="form-control" name="soru'+i+'" placeholder="" value=""><br/> <br/><div id="cevap'+i+'"><input type="text" class="form-control" name="cevap'+i+'[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle" id='+y+' href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/></div>');
             $(".cEkle").click(function(){
-                $("#cevap"+i).append('<input type="text" class="form-control" name="cevap[]" placeholder="" value=""> <br/> <br/>');
+                $("#cevap"+i).append('<input type="text" class="form-control" name="cevap'+i+'[]" placeholder="" value=""> <br/> <br/>');
              });
-
             });
     });	
 </script>
@@ -30,34 +29,97 @@ $y=0;
     include "baglan.php";
 
     if ($_POST){
-        $soru = strip_tags(trim($_POST['soru']));
-        $cevap = strip_tags(trim($_POST['cevap']));
-        if(!$soru || !$cevap){
-            echo "Boş alan bırakmayınız";
-        }else{
+        //en fazla 10 soru girilebilir-şu an 10 soru girmeden çalışmıyor, anketcevap ilk idsine soruidsini yazıyor, diğer idlere yazmıyor
+            for ($sayi = 0; $sayi < 10 ; $sayi++) {
+            $soru = ($_POST['soru'.$sayi] );
+            $cevap = ($_POST['cevap'.$sayi] );
+
             $kaydet=$db->prepare("INSERT INTO anketsoru SET soru =:s");
             $kaydet->execute([':s'=>$soru]);
+            foreach($cevap as $y){
+                $kaydet2=$db->prepare("INSERT INTO anketcevap SET cevap =:c");
+                $kaydet2->execute([':c'=>$y]);
 
-            $kaydet2=$db->prepare("INSERT INTO anketcevap SET cevap =:c");
-            $kaydet2->execute([':c'=>$cevap]);
-        }
+                $sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$soru'");
+                $sorgu->execute();
+                $array=$sorgu->fetch();
 
-        $sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$soru'");
-        $sorgu->execute();
-        $array=$sorgu->fetch();
-        $sonuc = implode(",", $array);
+                $sorgu2=$db->prepare("SELECT id FROM anketcevap WHERE cevap='$y'");
+                $sorgu2->execute();
+                $array2=$sorgu2->fetch();
 
-        $kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$sonuc' WHERE cevap='$cevap'");
-        $kaydet3->execute();
+                foreach($array2 as $idy){
+                    foreach($array as $idx){
+                    $kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$idx' WHERE id='$idy' ");
+                    $kaydet3->execute();
+                    }
+                }
+                
+            }
+         }
+        //$soru = ($_POST['soru']);
+        //$cevap = ($_POST['cevap']);
+        //if(!$soru || !$cevap){
+        //    echo "Boş alan bırakmayınız";
+        //}else{
+
+            /* foreach($cevap as $y){
+                $kaydet2=$db->prepare("INSERT INTO anketcevap SET cevap =:c");
+                $kaydet2->execute([':c'=>$y]);
+
+                foreach($soru as $x){
+                    $kaydet=$db->prepare("INSERT INTO anketsoru SET soru =:s");
+                    $kaydet->execute([':s'=>$x]);
+                    
+                    $sorgu2=$db->prepare("SELECT id FROM anketcevap WHERE cevap='$y'");
+                    $sorgu2->execute();
+                    $array2=$sorgu2->fetch();
+
+                    $sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$x'");
+                    $sorgu->execute();
+                    $array=$sorgu->fetch();
+                     
+                    
+                    foreach($array2 as $idy){
+                        foreach($array as $idx){
+                        $kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$idx' WHERE id='$idy' ");
+                        $kaydet3->execute();
+                        }
+                    }
+                }
+
+            } */
+
+            
+      
+                //$sorgu=$db->prepare("SELECT id FROM anketsoru WHERE soru='$x'");
+                //$sorgu->execute();
+                //$array=$sorgu->fetch();
+                //$sonuc = implode(",", $array);
+
+                //$sorgu2=$db->prepare("SELECT id FROM anketcevap WHERE cevap='$y'");
+                //$sorgu2->execute();
+                //$array2=$sorgu2->fetch();
+
+                //foreach($array as $idx){
+                //    foreach($array2 as $idy){
+                //$kaydet3=$db->prepare("UPDATE anketcevap SET soruid='$idx' WHERE id='$idy' ");
+                //$kaydet3->execute();
+                //    }
+                //}
+
+            
+        //}
+
     }
 ?>
 <form action="" method="post">
 
     <div id="soru" >
-        <input type="text" class="form-control" name="soru[]" placeholder="" value="">
+        <input type="text" class="form-control" name="soru<?php echo $i; ?>" placeholder="" value="">
         <br/> <br/>
         <div id="cevap<?php echo $i; ?>">
-            <input type="text" class="form-control" name="cevap[]" placeholder="" value="">
+            <input type="text" class="form-control" name="cevap<?php echo $i; ?>[]" placeholder="" value="">
             <br/> <br/>
         </div> 
         <div style="min-height:30px;
