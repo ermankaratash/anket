@@ -1,6 +1,6 @@
 <?php
 $i=0;
-$x=0;
+$y=0;
 ?>
 
 
@@ -9,12 +9,15 @@ $x=0;
 <script type="text/javascript">
     $(document).ready(function(){
         var i=0;
+        var y=0;
         $(".cEkle").click(function(){
             $("#cevap"+i).append('<input type="text" class="form-control" name="cevap[]" placeholder="" value=""> <br/> <br/>');
             });
         $(".sEkle").click(function(){
             i++;
-            $("#soru<?php echo $x; ?>").append('<div><input type="text" class="form-control" name="soru[]" placeholder="" value=""><br/> <br/><div id="cevap'+i+'"><input type="text" class="form-control" name="cevap[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle"  href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/>');
+            $("#"+y).hide();
+            y++;
+            $("#soru").append('<div><input type="text" class="form-control" name="soru[]" placeholder="" value=""><br/> <br/><div id="cevap'+i+'"><input type="text" class="form-control" name="cevap[]" placeholder="" value=""><br/> <br/></div> <div style="min-height:30px;min-width:35px;text-align:center;margin:2px;color: #fff;background-color: #F39C35;border-color: #4cae4c;  padding: 10px 16px;font-size: 18px;line-height: 1.33;border-radius: 6px;}"> <button class="cEkle" id='+y+' href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> </div> </div> <br/> <br/>');
             $(".cEkle").click(function(){
                 $("#cevap"+i).append('<input type="text" class="form-control" name="cevap[]" placeholder="" value=""> <br/> <br/>');
              });
@@ -50,7 +53,7 @@ $x=0;
 ?>
 <form action="" method="post">
 
-    <div id="soru<?php echo $x; ?>" >
+    <div id="soru" >
         <input type="text" class="form-control" name="soru[]" placeholder="" value="">
         <br/> <br/>
         <div id="cevap<?php echo $i; ?>">
@@ -68,7 +71,7 @@ $x=0;
             font-size: 18px;
             line-height: 1.33;
             border-radius: 6px;}"> 
-            <button class="cEkle"  href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> 
+            <button class="cEkle" id="<?php echo $y; ?>" href="javascript:void(0)" type="button"> Yeni Cevap Ekle </button> 
         </div> 
     </div>
 
